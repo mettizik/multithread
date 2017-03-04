@@ -21,10 +21,11 @@ class CustomThread(threading.Thread):
         print("[{}] Starting".format(self._name))
         ttl = CustomThread._ttl
         while CustomThread._continue and ttl > 0:
-            old_val = self._resource.value()
-            print("[{}] old value {}".format(self._thread_id, old_val))
-            self._func(self._resource)
-            new_val = self._resource.value()
+            with self._resource.lock():
+                old_val = self._resource.value()
+                print("[{}] old value {}".format(self._thread_id, old_val))
+                self._func(self._resource)
+                new_val = self._resource.value()
             print("[{}] new value {}".format(self._thread_id, new_val))
             if new_val == old_val:
                 CustomThread._continue = False
