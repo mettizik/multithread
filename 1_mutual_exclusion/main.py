@@ -10,10 +10,16 @@ def decr(resource):
 
 if __name__ == "__main__":
     res = CriticalResource.SharedResource(0)
-    increment_thread = CustomThread.CustomThread(1, "Incrementation thread", res, incr)
-    decrement_thread = CustomThread.CustomThread(2, "Decrementation thread", res, decr)
-    increment_thread.start()
-    decrement_thread.start()
-    increment_thread.join()
-    import sys
-    sys.exit(0)
+    threads = []
+    for i in range(10):        
+        threads.append(CustomThread.CustomThread(i + 1, "Incrementation thread #{}".format(i), res, incr))
+    for i in range(10, 20):        
+        threads.append(CustomThread.CustomThread(i + 1, "Decrementation thread #{}".format(i), res, decr))
+
+    for thread in threads:
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
+    print("Errors occured: {}".format(CustomThread.CustomThread._fails_count))
