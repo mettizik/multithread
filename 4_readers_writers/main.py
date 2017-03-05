@@ -17,7 +17,6 @@ r1.start()
 r2.start()
 
 while True:
-    time.sleep(0.5)
     print("\r| R0 [{}] | R1 [{}] | R2 [{}] | W0 [{}] | W1 [{}] |".format(
-        r0.state(), r1.state(), r2.state(), w0.state(), w1.state()), end='')
+        r0.state(), r1.state(), r2.state(), w0.state(), w1.state()), end='', flush=True)
 
