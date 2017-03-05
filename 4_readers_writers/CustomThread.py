@@ -60,4 +60,5 @@ class Writer(CustomThread):
         CustomThread.__init__(self, name, resource)
 
     def do_action(self, buffer):
+        time.sleep(1)
         self._resource.write(b"msg")
