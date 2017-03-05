@@ -25,7 +25,11 @@ class CustomThread(threading.Thread):
     def use_buffer(self, buffer):
         for char in CustomThread._indicators:
             self._state = char
-            self.do_action(buffer)
+            try:
+                self.do_action(buffer)
+            except Exception as ex:
+                print ("Error in thread #{} [ {} ] - {}".format(
+                    self._thread_id, self._name, ex))
 
         self._state = '*'
 
@@ -46,15 +50,16 @@ class CustomThread(threading.Thread):
 
 class Reader(CustomThread):
     def __init__(self, name, resource):
-        CustomThread.__init__(self, resource, name)
+        CustomThread.__init__(self, name, resource)
 
     def do_action(self, buffer):
-        time.sleep(1)
+        self._resource.read()
+        time.sleep(0.25)
 
 
 class Writer(CustomThread):
     def __init__(self, name, resource):
-        CustomThread.__init__(self, resource, name)
+        CustomThread.__init__(self, name, resource)
 
     def do_action(self, buffer):
-        time.sleep(1)
+        self._resource.write(b"msg")
