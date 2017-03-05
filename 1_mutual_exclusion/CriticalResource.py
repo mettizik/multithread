@@ -1,4 +1,6 @@
 import threading
+
+
 class SharedResource:
     """
     This class represents a resource that can be share in mulitthreaded environment
